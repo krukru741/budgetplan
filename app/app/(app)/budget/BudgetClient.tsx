@@ -69,13 +69,13 @@ export default function BudgetClient({
     return (
       <section className="mb-8">
         <h2 className="text-lg font-semibold text-text mb-4">{title}</h2>
-        <div className="space-y-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {groupBudgets.map(b => {
             const progress = b.effective_budget > 0 ? (b.spent_amount / b.effective_budget) * 100 : 0
             const isOver = b.spent_amount > b.effective_budget
             
             return (
-              <div key={b.category_id} className="card p-4 hover:border-primary/30 transition-colors">
+              <div key={b.category_id} className="card p-3.5 hover:border-primary/30 transition-colors">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-surface-raised flex items-center justify-center text-text shrink-0">
@@ -101,7 +101,7 @@ export default function BudgetClient({
                 </div>
                 
                 {/* Progress Bar */}
-                <div className="h-2 w-full bg-surface-raised rounded-full overflow-hidden mb-2">
+                <div className="h-2.5 w-full bg-primary-light/50 rounded-full overflow-hidden mb-2">
                   <div 
                     className={`h-full rounded-full transition-all ${isOver ? 'bg-danger' : progress > 80 ? 'bg-warning' : 'bg-primary'}`}
                     style={{ width: `${Math.min(progress, 100)}%` }}
@@ -125,7 +125,7 @@ export default function BudgetClient({
   }
 
   return (
-    <div className="page-container animate-fade-in max-w-5xl mx-auto">
+    <div className="page-container animate-fade-in w-full max-w-7xl mx-auto pb-24 md:pb-8">
       {/* Header & Month Navigation */}
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-2xl font-display font-bold text-text">Budget</h1>
@@ -143,7 +143,7 @@ export default function BudgetClient({
       </div>
 
       {/* Overview Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 lg:grid-cols-4 w-full gap-4 mb-8">
         <div className="card p-4">
           <div className="text-xs font-medium text-text-secondary mb-1">Income</div>
           <div className="text-lg font-semibold text-text">₱{totals.income.toLocaleString()}</div>

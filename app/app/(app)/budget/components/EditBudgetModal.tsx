@@ -43,7 +43,7 @@ export default function EditBudgetModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
       <div className="bg-surface rounded-2xl shadow-xl w-full max-w-md overflow-hidden animate-slide-up">
         <div className="flex items-center justify-between p-4 border-b border-border">
           <h2 className="text-lg font-semibold text-text">Edit Budget</h2>
