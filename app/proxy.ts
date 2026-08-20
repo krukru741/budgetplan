@@ -1,10 +1,10 @@
-// middleware.ts
+// proxy.ts (Next.js 16 — replaces middleware.ts)
 // Refreshes Supabase session on every request (required for @supabase/ssr).
 // Guards protected routes and auth routes.
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request })
 
   const supabase = createServerClient(
