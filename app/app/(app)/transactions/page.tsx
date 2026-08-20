@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { Plus, ArrowRightLeft, TrendingDown, TrendingUp, Receipt } from 'lucide-react'
+import Icon from '@/components/ui/Icon'
 
 export const metadata = { title: 'Transactions | BudgetPlan' }
 
@@ -44,8 +45,18 @@ export default async function TransactionsPage() {
     }
   }
 
+  // Group by date
+  const groupedByDate: Record<string, any[]> = {}
+  
+  displayItems.forEach(item => {
+    // Format: "Aug 20, 2026"
+    const dateStr = new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+    if (!groupedByDate[dateStr]) groupedByDate[dateStr] = []
+    groupedByDate[dateStr].push(item)
+  })
+
   return (
-    <div className="page-container animate-fade-in">
+    <div className="page-container animate-fade-in max-w-4xl mx-auto">
       <div className="section-header">
         <div>
           <h1 className="text-2xl font-display font-bold text-text">Transactions</h1>
@@ -60,7 +71,7 @@ export default async function TransactionsPage() {
         </Link>
       </div>
 
-      <div className="mt-8 space-y-4">
+      <div className="mt-8 space-y-8">
         {displayItems.length === 0 ? (
           <div className="card border-dashed p-12 text-center flex flex-col items-center justify-center">
             <div className="w-16 h-16 rounded-full bg-surface-raised text-text-tertiary flex items-center justify-center mb-4">
@@ -76,69 +87,73 @@ export default async function TransactionsPage() {
             </Link>
           </div>
         ) : (
-          displayItems.map((item) => {
-            if (item.type === 'transfer') {
-              // Extract from/to from legs
-              const outflow = item.legs.find((l: any) => l.amount < 0)
-              const inflow = item.legs.find((l: any) => l.amount > 0)
-              const transferAmount = inflow ? inflow.amount : (outflow ? Math.abs(outflow.amount) : 0)
-              
-              return (
-                <div key={item.transfer_id} className="card p-4 flex items-center justify-between hover:bg-surface-raised transition-colors">
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-full bg-info-light text-info flex items-center justify-center shrink-0">
-                      <ArrowRightLeft className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <div className="font-semibold text-text leading-tight mb-1">
-                        Transfer
+          Object.entries(groupedByDate).map(([dateStr, items]) => (
+            <div key={dateStr} className="space-y-3">
+              <h3 className="text-sm font-semibold text-text-secondary uppercase tracking-wider pl-1">
+                {dateStr}
+              </h3>
+              {items.map((item) => {
+                if (item.type === 'transfer') {
+                  // Extract from/to from legs
+                  const outflow = item.legs.find((l: any) => l.amount < 0)
+                  const inflow = item.legs.find((l: any) => l.amount > 0)
+                  const transferAmount = inflow ? inflow.amount : (outflow ? Math.abs(outflow.amount) : 0)
+                  
+                  return (
+                    <div key={item.transfer_id} className="card p-4 flex items-center justify-between hover:bg-surface-raised transition-colors">
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-full bg-info-light text-info flex items-center justify-center shrink-0">
+                          <ArrowRightLeft className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <div className="font-semibold text-text leading-tight mb-1">
+                            Transfer
+                          </div>
+                          <div className="text-xs text-text-secondary">
+                            {outflow?.account?.name || 'Unknown'} → {inflow?.account?.name || 'Unknown'}
+                            {item.description && <span className="hidden sm:inline mx-2">• {item.description}</span>}
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-xs text-text-secondary">
-                        {outflow?.account?.name || 'Unknown'} → {inflow?.account?.name || 'Unknown'}
-                        <span className="mx-2">•</span>
-                        {new Date(item.date).toLocaleDateString()}
+                      <div className="text-right">
+                        <div className="font-semibold text-text tabular-nums">
+                          ₱{Number(transferAmount).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-semibold text-text tabular-nums">
-                      ₱{Number(transferAmount).toLocaleString('en-US', { minimumFractionDigits: 2 })}
-                    </div>
-                  </div>
-                </div>
-              )
-            }
+                  )
+                }
 
-            // Normal Income/Expense
-            const isExpense = item.type === 'expense'
-            return (
-              <div key={item.id} className="card p-4 flex items-center justify-between hover:bg-surface-raised transition-colors">
-                <div className="flex items-center gap-4">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
-                    isExpense ? 'bg-danger-light text-danger' : 'bg-success-light text-success'
-                  }`}>
-                    <span className="text-lg">{item.category?.icon || (isExpense ? <TrendingDown className="w-5 h-5"/> : <TrendingUp className="w-5 h-5"/>)}</span>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-text leading-tight mb-1">
-                      {item.category?.name || 'Uncategorized'}
+                // Normal Income/Expense
+                const isExpense = item.type === 'expense'
+                return (
+                  <div key={item.id} className="card p-4 flex items-center justify-between hover:bg-surface-raised transition-colors">
+                    <div className="flex items-center gap-4">
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
+                        isExpense ? 'bg-danger-light text-danger' : 'bg-success-light text-success'
+                      }`}>
+                        {item.category?.icon ? <Icon name={item.category.icon} className="w-5 h-5" /> : (isExpense ? <TrendingDown className="w-5 h-5"/> : <TrendingUp className="w-5 h-5"/>)}
+                      </div>
+                      <div>
+                        <div className="font-semibold text-text leading-tight mb-1">
+                          {item.category?.name || 'Uncategorized'}
+                        </div>
+                        <div className="text-xs text-text-secondary">
+                          {item.account?.name}
+                          {item.description && <span className="hidden sm:inline mx-2">• {item.description}</span>}
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-xs text-text-secondary">
-                      {item.account?.name}
-                      <span className="mx-2">•</span>
-                      {new Date(item.date).toLocaleDateString()}
-                      {item.description && <><span className="mx-2">•</span>{item.description}</>}
+                    <div className="text-right">
+                      <div className={`font-semibold tabular-nums ${isExpense ? 'amount-negative' : 'text-success'}`}>
+                        {isExpense ? '-' : '+'}₱{Number(item.amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="text-right">
-                  <div className={`font-semibold tabular-nums ${isExpense ? 'amount-negative' : 'text-success'}`}>
-                    {isExpense ? '-' : '+'}₱{Number(item.amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}
-                  </div>
-                </div>
-              </div>
-            )
-          })
+                )
+              })}
+            </div>
+          ))
         )}
       </div>
     </div>

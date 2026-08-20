@@ -36,9 +36,9 @@ export default async function BudgetPage(props: { searchParams: Promise<{ month?
   const totalIncome = incomeTx?.reduce((sum: number, tx: any) => sum + Number(tx.amount), 0) || 0
   
   // Totals
-  const totalAllocated = budgets?.reduce((sum: number, b: any) => sum + Number(b.budget_amount), 0) || 0
+  const totalBudgeted = budgets?.reduce((sum: number, b: any) => sum + Number(b.budget_amount), 0) || 0
   const totalSpent = budgets?.reduce((sum: number, b: any) => sum + Number(b.spent_amount), 0) || 0
-  const unallocated = totalIncome - totalAllocated
+  const unallocated = totalIncome - totalBudgeted
 
   return (
     <BudgetClient
@@ -47,7 +47,7 @@ export default async function BudgetPage(props: { searchParams: Promise<{ month?
       budgets={budgets || []}
       totals={{
         income: totalIncome,
-        allocated: totalAllocated,
+        budgeted: totalBudgeted,
         spent: totalSpent,
         unallocated
       }}

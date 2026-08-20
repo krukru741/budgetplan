@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { Plus, Tag, Archive } from 'lucide-react'
+import Icon from '@/components/ui/Icon'
 
 export const metadata = { title: 'Categories | BudgetPlan' }
 
@@ -24,7 +25,7 @@ export default async function CategoriesPage() {
   const incomeCategories = activeCategories.filter(c => c.type === 'income')
 
   return (
-    <div className="page-container animate-fade-in">
+    <div className="page-container animate-fade-in max-w-5xl mx-auto">
       <div className="section-header">
         <div>
           <h1 className="text-2xl font-display font-bold text-text">Categories</h1>
@@ -48,8 +49,8 @@ export default async function CategoriesPage() {
               <div key={cat.id} className="card p-4 flex flex-col justify-between hover:border-primary/30 transition-colors">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-surface-raised flex items-center justify-center text-text">
-                      <span className="text-xl">{cat.icon || '🏷️'}</span>
+                    <div className="w-10 h-10 rounded-xl bg-surface-raised flex items-center justify-center text-text shrink-0">
+                      <Icon name={cat.icon} className="w-5 h-5" />
                     </div>
                     <div>
                       <h3 className="font-semibold text-text leading-tight">{cat.name}</h3>
@@ -69,8 +70,8 @@ export default async function CategoriesPage() {
             {incomeCategories.map(cat => (
               <div key={cat.id} className="card p-4 flex flex-col justify-between hover:border-primary/30 transition-colors">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-surface-raised flex items-center justify-center text-text">
-                    <span className="text-xl">{cat.icon || '💰'}</span>
+                  <div className="w-10 h-10 rounded-xl bg-surface-raised flex items-center justify-center text-text shrink-0">
+                    <Icon name={cat.icon} className="w-5 h-5" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-text leading-tight">{cat.name}</h3>
@@ -91,8 +92,8 @@ export default async function CategoriesPage() {
             <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3 opacity-60">
               {archivedCategories.map(cat => (
                 <div key={cat.id} className="card p-4 flex items-center gap-3 bg-surface-raised">
-                   <div className="w-8 h-8 rounded-lg bg-surface flex items-center justify-center text-text-tertiary">
-                    <span className="text-sm">{cat.icon || '🏷️'}</span>
+                   <div className="w-8 h-8 rounded-lg bg-surface flex items-center justify-center text-text-tertiary shrink-0">
+                    <Icon name={cat.icon} className="w-4 h-4" />
                   </div>
                   <span className="font-medium text-text-secondary line-through">{cat.name}</span>
                 </div>

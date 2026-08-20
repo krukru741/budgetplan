@@ -17,6 +17,8 @@ type CategoryBudget = {
   remaining_amount: number
 }
 
+import Icon from '@/components/ui/Icon'
+
 export default function BudgetClient({
   month,
   year,
@@ -28,7 +30,7 @@ export default function BudgetClient({
   budgets: CategoryBudget[]
   totals: {
     income: number
-    allocated: number
+    budgeted: number
     spent: number
     unallocated: number
   }
@@ -76,13 +78,17 @@ export default function BudgetClient({
               <div key={b.category_id} className="card p-4 hover:border-primary/30 transition-colors">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-surface-raised flex items-center justify-center text-text text-lg shrink-0">
-                      {b.icon}
+                    <div className="w-10 h-10 rounded-xl bg-surface-raised flex items-center justify-center text-text shrink-0">
+                      <Icon name={b.icon} className="w-5 h-5" />
                     </div>
                     <div>
                       <h3 className="font-semibold text-text">{b.name}</h3>
                       <div className="text-xs text-text-secondary">
-                        {b.rollover_in > 0 ? `Budget: ₱${b.budget_amount} + ₱${b.rollover_in} rollover` : `Budget: ₱${b.budget_amount}`}
+                        {b.budget_amount === 0 
+                          ? 'Not budgeted' 
+                          : b.rollover_in > 0 
+                            ? `Budget: ₱${b.budget_amount} + ₱${b.rollover_in} rollover` 
+                            : `Budget: ₱${b.budget_amount}`}
                       </div>
                     </div>
                   </div>
@@ -119,7 +125,7 @@ export default function BudgetClient({
   }
 
   return (
-    <div className="page-container animate-fade-in max-w-3xl mx-auto">
+    <div className="page-container animate-fade-in max-w-5xl mx-auto">
       {/* Header & Month Navigation */}
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-2xl font-display font-bold text-text">Budget</h1>
@@ -143,8 +149,8 @@ export default function BudgetClient({
           <div className="text-lg font-semibold text-text">₱{totals.income.toLocaleString()}</div>
         </div>
         <div className="card p-4">
-          <div className="text-xs font-medium text-text-secondary mb-1">Allocated</div>
-          <div className="text-lg font-semibold text-info">₱{totals.allocated.toLocaleString()}</div>
+          <div className="text-xs font-medium text-text-secondary mb-1">Budgeted</div>
+          <div className="text-lg font-semibold text-info">₱{totals.budgeted.toLocaleString()}</div>
         </div>
         <div className="card p-4">
           <div className="text-xs font-medium text-text-secondary mb-1">Spent</div>
