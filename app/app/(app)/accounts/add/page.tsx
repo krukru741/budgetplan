@@ -64,7 +64,7 @@ export default function AddAccountPage() {
                   onClick={() => setType(accType.id)}
                   className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 gap-2 transition-all ${
                     type === accType.id 
-                      ? 'border-primary bg-primary-light/30 text-primary' 
+                      ? 'border-primary bg-primary-light text-primary' 
                       : 'border-border bg-surface text-text-secondary hover:border-primary/50'
                   }`}
                 >

@@ -94,7 +94,7 @@ export default function BudgetClient({
                   </div>
                   <button 
                     onClick={() => setEditingCategory(b)}
-                    className="p-2 text-text-secondary hover:text-primary hover:bg-primary-light/10 rounded-lg transition-colors"
+                    className="p-2 text-text-secondary hover:text-primary hover:bg-primary-light rounded-lg transition-colors"
                   >
                     <Edit2 className="w-4 h-4" />
                   </button>

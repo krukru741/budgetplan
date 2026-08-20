@@ -110,7 +110,7 @@ export default function AddCategoryPage() {
                   type="button"
                   onClick={() => setGroup(g.id)}
                   className={`w-full flex items-center justify-between p-4 rounded-xl border-2 transition-all text-left ${
-                    group === g.id ? 'border-primary bg-primary-light/30' : 'border-border bg-surface hover:border-primary/50'
+                    group === g.id ? 'border-primary bg-primary-light' : 'border-border bg-surface hover:border-primary/50'
                   }`}
                 >
                   <div>

@@ -93,7 +93,7 @@ export default function OnboardingWizard() {
                     key={c.code}
                     onClick={() => setCurrency(c.code)}
                     className={`w-full flex items-center justify-between p-4 rounded-xl border-2 transition-all ${
-                      currency === c.code ? 'border-primary bg-primary-light/30' : 'border-border bg-surface hover:border-primary/50'
+                      currency === c.code ? 'border-primary bg-primary-light' : 'border-border bg-surface hover:border-primary/50'
                     }`}
                   >
                     <div className="flex items-center gap-3">
@@ -135,7 +135,7 @@ export default function OnboardingWizard() {
                     key={m.id}
                     onClick={() => setBudgetMethod(m.id)}
                     className={`w-full flex items-center justify-between p-4 rounded-xl border-2 transition-all text-left ${
-                      budgetMethod === m.id ? 'border-primary bg-primary-light/30' : 'border-border bg-surface hover:border-primary/50'
+                      budgetMethod === m.id ? 'border-primary bg-primary-light' : 'border-border bg-surface hover:border-primary/50'
                     }`}
                   >
                     <div>
@@ -183,7 +183,7 @@ export default function OnboardingWizard() {
                           key={type.id}
                           onClick={() => setAccountType(type.id)}
                           className={`flex flex-col items-center justify-center p-3 rounded-xl border-2 gap-2 transition-all ${
-                            accountType === type.id ? 'border-primary bg-primary-light/30 text-primary' : 'border-border bg-surface text-text-secondary hover:border-primary/50'
+                            accountType === type.id ? 'border-primary bg-primary-light text-primary' : 'border-border bg-surface text-text-secondary hover:border-primary/50'
                           }`}
                         >
                           <Icon className="w-6 h-6" />
