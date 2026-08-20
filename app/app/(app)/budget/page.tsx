@@ -33,11 +33,11 @@ export default async function BudgetPage(props: { searchParams: Promise<{ month?
     .gte('date', `${year}-${month.toString().padStart(2, '0')}-01`)
     .lt('date', month === 12 ? `${year + 1}-01-01` : `${year}-${(month + 1).toString().padStart(2, '0')}-01`)
 
-  const totalIncome = incomeTx?.reduce((sum, tx) => sum + Number(tx.amount), 0) || 0
+  const totalIncome = incomeTx?.reduce((sum: number, tx: any) => sum + Number(tx.amount), 0) || 0
   
   // Totals
-  const totalAllocated = budgets?.reduce((sum, b) => sum + Number(b.budget_amount), 0) || 0
-  const totalSpent = budgets?.reduce((sum, b) => sum + Number(b.spent_amount), 0) || 0
+  const totalAllocated = budgets?.reduce((sum: number, b: any) => sum + Number(b.budget_amount), 0) || 0
+  const totalSpent = budgets?.reduce((sum: number, b: any) => sum + Number(b.spent_amount), 0) || 0
   const unallocated = totalIncome - totalAllocated
 
   return (

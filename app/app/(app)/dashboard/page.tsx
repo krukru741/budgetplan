@@ -15,9 +15,9 @@ export default async function DashboardPage() {
 
   const { data, error } = await supabase.rpc('get_safe_to_spend').single()
   
-  const safeToSpend = data?.current_safe_to_spend || 0
-  const reservedBudget = data?.reserved_budget || 0
-  const totalAvailable = data?.total_available_money || 0
+  const safeToSpend = (data as any)?.current_safe_to_spend || 0
+  const reservedBudget = (data as any)?.reserved_budget || 0
+  const totalAvailable = (data as any)?.total_available_money || 0
 
   const { data: profile } = await supabase
     .from('users')
