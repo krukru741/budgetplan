@@ -2,13 +2,13 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Wallet, Plus, Target, User } from 'lucide-react'
+import { LayoutDashboard, Wallet, Plus, LineChart, User } from 'lucide-react'
 
 const navItems = [
   { name: 'Home', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Budget', href: '/budget', icon: Wallet },
   { name: 'Add', href: '/transactions?add=true', icon: Plus, isFab: true },
-  { name: 'Goals', href: '/goals', icon: Target },
+  { name: 'Analytics', href: '/analytics', icon: LineChart },
   { name: 'Profile', href: '/settings', icon: User },
 ]
 
