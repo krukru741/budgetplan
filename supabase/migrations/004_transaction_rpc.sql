@@ -112,8 +112,12 @@ BEGIN
     RAISE EXCEPTION 'Transfer amount must be strictly positive.';
   END IF;
 
-  -- 3. Generate shared transfer ID
-  v_transfer_id := gen_random_uuid();
+  -- 3. Insert into transfers table
+  INSERT INTO public.transfers (
+    user_id, from_account_id, to_account_id, amount, date, note
+  ) VALUES (
+    p_user_id, p_from_account_id, p_to_account_id, p_amount, p_date, p_description
+  ) RETURNING id INTO v_transfer_id;
 
   -- 4. Insert Outflow (Leg 1)
   INSERT INTO public.transactions (

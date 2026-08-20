@@ -37,6 +37,23 @@ export default function AddTransactionModal({
       const formData = new FormData(e.currentTarget)
       
       if (tab === 'transfer') {
+        const fromAccount = formData.get('from_account_id') as string
+        const toAccount = formData.get('to_account_id') as string
+        const amount = parseFloat(formData.get('amount') as string)
+
+        if (fromAccount === toAccount) {
+          setError('Source and Destination accounts cannot be the same.')
+          setLoading(false)
+          return
+        }
+
+        const sourceAccount = accounts.find(a => a.id === fromAccount)
+        if (sourceAccount && amount > sourceAccount.balance) {
+          setError(`Insufficient funds in source account (Balance: ₱${sourceAccount.balance.toLocaleString()})`)
+          setLoading(false)
+          return
+        }
+
         await addTransfer(formData)
       } else {
         formData.set('type', tab)
