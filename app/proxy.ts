@@ -42,6 +42,7 @@ export async function proxy(request: NextRequest) {
 
   // Protected routes — redirect unauthenticated users to login
   const isProtectedRoute = pathname.startsWith('/dashboard') ||
+    pathname.startsWith('/onboarding') ||
     pathname.startsWith('/budget') ||
     pathname.startsWith('/transactions') ||
     pathname.startsWith('/bills') ||
