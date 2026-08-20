@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { Plus, ArrowRightLeft, TrendingDown, TrendingUp } from 'lucide-react'
+import { Plus, ArrowRightLeft, TrendingDown, TrendingUp, Receipt } from 'lucide-react'
 
 export const metadata = { title: 'Transactions | BudgetPlan' }
 
