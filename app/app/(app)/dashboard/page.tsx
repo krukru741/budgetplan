@@ -128,14 +128,14 @@ export default async function DashboardPage() {
             </div>
           </div>
 
-          {/* Mobile-only Quick Actions (Hidden on Desktop) */}
+          {/* Mobile-only Quick Actions (Hidden on Desktop, as Desktop has a side panel for it) */}
           <div className="md:hidden grid grid-cols-3 gap-3">
             {[
               { name: 'Budget', icon: Wallet, href: '/budget', color: 'text-info' },
               { name: 'Bills', icon: CalendarDays, href: '/bills', color: 'text-warning' },
               { name: 'Goals', icon: Target, href: '/goals', color: 'text-success' },
             ].map(item => (
-              <Link key={item.name} href={item.href} className="card p-3 flex flex-col items-center justify-center text-center hover:bg-surface-raised transition-colors group shadow-sm">
+              <Link key={item.name} href={item.href} className="card py-3 px-2 flex flex-col items-center justify-center text-center hover:bg-surface-raised transition-colors group shadow-sm">
                 <div className={`w-10 h-10 rounded-full bg-surface-raised flex items-center justify-center mb-2 group-hover:scale-110 transition-transform ${item.color}`}>
                   <item.icon className="w-5 h-5" />
                 </div>
@@ -255,18 +255,20 @@ export default async function DashboardPage() {
                 </div>
               </div>
 
-              <div className="relative z-10 flex gap-6 w-full h-32 items-end justify-center px-4">
-                <div 
-                  className="w-16 bg-success-light rounded-t-lg relative group-hover:bg-success/20 transition-all duration-1000 ease-out flex items-start justify-center pt-2"
-                  style={{ height: `${incomeHeight}%` }}
-                >
-                  <span className="text-[10px] font-bold text-success uppercase tracking-widest rotate-90 origin-left ml-6 mt-4 opacity-50 group-hover:opacity-100">In</span>
+              <div className="relative z-10 flex gap-8 w-full h-32 items-end justify-center px-4 pb-6">
+                <div className="flex flex-col items-center justify-end h-full w-16">
+                  <div 
+                    className="w-full bg-success-light rounded-t-md relative group-hover:bg-success/20 transition-all duration-1000 ease-out"
+                    style={{ height: `${incomeHeight}%` }}
+                  ></div>
+                  <span className="text-[10px] font-bold text-success uppercase tracking-widest mt-2">In</span>
                 </div>
-                <div 
-                  className="w-16 bg-danger-light rounded-t-lg relative group-hover:bg-danger/20 transition-all duration-1000 ease-out flex items-start justify-center pt-2"
-                  style={{ height: `${expenseHeight}%` }}
-                >
-                  <span className="text-[10px] font-bold text-danger uppercase tracking-widest rotate-90 origin-left ml-6 mt-4 opacity-50 group-hover:opacity-100">Out</span>
+                <div className="flex flex-col items-center justify-end h-full w-16">
+                  <div 
+                    className="w-full bg-danger-light rounded-t-md relative group-hover:bg-danger/20 transition-all duration-1000 ease-out"
+                    style={{ height: `${expenseHeight}%` }}
+                  ></div>
+                  <span className="text-[10px] font-bold text-danger uppercase tracking-widest mt-2">Out</span>
                 </div>
               </div>
             </div>
