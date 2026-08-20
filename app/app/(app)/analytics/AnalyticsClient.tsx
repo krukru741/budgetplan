@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react'
 import { useRouter } from 'next/navigation'
-import { ChevronLeft, ChevronRight, TrendingUp, PiggyBank, Target, Wallet, PieChart as PieChartIcon } from 'lucide-react'
+import { ChevronLeft, ChevronRight, TrendingUp, PiggyBank, Target, Wallet, PieChart as PieChartIcon, Download } from 'lucide-react'
 import { 
   LineChart, Line, 
   BarChart, Bar, 
@@ -33,6 +33,25 @@ export default function AnalyticsClient({
 
   const navigateTo = (m: number, y: number) => {
     router.push(`/analytics?month=${m}&year=${y}`)
+  }
+
+  const downloadCSV = () => {
+    const rows = transactions.map(t => {
+      const date = new Date(t.date).toLocaleDateString('en-US')
+      const type = t.type.toUpperCase()
+      const category = t.category?.name || 'Uncategorized'
+      const amount = Number(t.amount).toFixed(2)
+      return `"${date}","${type}","${category}","${amount}"`
+    })
+    
+    const csvContent = "data:text/csv;charset=utf-8," + ['"Date","Type","Category","Amount"'].concat(rows).join("\n")
+    const encodedUri = encodeURI(csvContent)
+    const link = document.createElement("a")
+    link.setAttribute("href", encodedUri)
+    link.setAttribute("download", `budgetplan_report_${year}_${month}.csv`)
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
   }
 
   // --- 1. Top Level Metrics ---
@@ -115,17 +134,26 @@ export default function AnalyticsClient({
           <h1 className="text-2xl font-display font-bold text-primary">Analytics & Reports</h1>
           <p className="text-text-secondary mt-1">Track your cash flow and spending habits</p>
         </div>
-        
-        <div className="flex items-center gap-4 bg-surface-raised p-2 rounded-xl shrink-0 shadow-sm border border-border">
-          <button onClick={() => navigateTo(prevMonth, prevYear)} className="p-1.5 rounded-lg text-primary/70 hover:bg-primary-light/50 hover:text-primary transition-colors">
-            <ChevronLeft className="w-5 h-5" />
+        <div className="flex flex-wrap items-center gap-3">
+          <button 
+            onClick={downloadCSV}
+            className="flex items-center justify-center gap-2 bg-surface hover:bg-primary-light/30 border-2 border-primary/20 hover:border-primary text-primary px-4 py-2.5 rounded-xl font-bold transition-all shadow-sm flex-1 sm:flex-none"
+          >
+            <Download className="w-4 h-4" />
+            <span className="text-sm">Export CSV</span>
           </button>
-          <div className="w-32 text-center font-display font-bold text-primary">
-            {new Date(year, month - 1).toLocaleString('default', { month: 'long', year: 'numeric' })}
+          
+          <div className="flex flex-1 sm:flex-none items-center justify-between sm:justify-center gap-2 sm:gap-4 bg-surface-raised p-2 rounded-xl shadow-sm border border-border">
+            <button onClick={() => navigateTo(prevMonth, prevYear)} className="p-1.5 rounded-lg text-primary/70 hover:bg-primary-light/50 hover:text-primary transition-colors">
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <div className="w-28 sm:w-32 text-center font-display font-bold text-primary text-sm sm:text-base">
+              {new Date(year, month - 1).toLocaleString('default', { month: 'long', year: 'numeric' })}
+            </div>
+            <button onClick={() => navigateTo(nextMonth, nextYear)} className="p-1.5 rounded-lg text-primary/70 hover:bg-primary-light/50 hover:text-primary transition-colors">
+              <ChevronRight className="w-5 h-5" />
+            </button>
           </div>
-          <button onClick={() => navigateTo(nextMonth, nextYear)} className="p-1.5 rounded-lg text-primary/70 hover:bg-primary-light/50 hover:text-primary transition-colors">
-            <ChevronRight className="w-5 h-5" />
-          </button>
         </div>
       </div>
 
