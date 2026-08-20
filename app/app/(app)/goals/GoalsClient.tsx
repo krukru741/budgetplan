@@ -51,25 +51,27 @@ export default function GoalsClient({
   }
 
   return (
-    <div className="page-container animate-fade-in w-full max-w-7xl mx-auto pb-24 md:pb-8 flex flex-col gap-8">
+    <div className="page-container animate-fade-in w-full max-w-7xl mx-auto pb-28 md:pb-8 flex flex-col gap-8">
       {/* Header */}
-      <div className="section-header flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <div className="section-header flex items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-display font-bold text-primary">Goals & Savings</h1>
-          <p className="text-text-secondary mt-1">Track your progress towards financial goals</p>
+          <p className="text-text-secondary mt-1 hidden md:block">Track your progress towards financial goals</p>
         </div>
-        <button 
-          onClick={() => setIsAddModalOpen(true)}
-          className="w-full md:w-auto flex items-center justify-center gap-2 bg-primary text-white px-4 py-2 rounded-xl font-medium hover:bg-primary-hover transition-colors shadow-sm"
-        >
-          <Plus className="w-5 h-5" />
-          New Goal
-        </button>
+        {initialGoals.length > 0 && (
+          <button 
+            onClick={() => setIsAddModalOpen(true)}
+            className="flex items-center justify-center gap-2 bg-primary text-white p-2.5 md:px-4 md:py-2 rounded-xl font-medium hover:bg-primary-hover transition-colors shadow-sm shrink-0"
+          >
+            <Plus className="w-5 h-5" />
+            <span className="hidden md:inline">New Goal</span>
+          </button>
+        )}
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="card p-5">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+        <div className="card p-5 h-full flex flex-col justify-between">
           <div className="flex items-center gap-3 mb-2">
             <div className="p-2 bg-primary-light rounded-lg text-primary">
               <PiggyBank className="w-5 h-5" />
@@ -78,23 +80,25 @@ export default function GoalsClient({
           </div>
           <div className="text-2xl font-bold text-primary">₱{totalSaved.toLocaleString()}</div>
         </div>
-        <div className="card p-5">
+        <div className="card p-5 h-full flex flex-col justify-between">
           <div className="flex items-center gap-3 mb-2">
             <div className="p-2 bg-primary-light rounded-lg text-primary">
               <Target className="w-5 h-5" />
             </div>
-            <div className="text-sm font-semibold text-primary/70 uppercase tracking-wider">Total Target</div>
+            <div className="text-sm font-semibold text-primary/70 uppercase tracking-wider line-clamp-1">Total Target</div>
           </div>
           <div className="text-2xl font-bold text-primary">₱{totalTarget.toLocaleString()}</div>
         </div>
-        <div className="card p-5">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 bg-primary-light rounded-lg text-primary">
-              <TrendingUp className="w-5 h-5" />
+        <div className="card p-5 col-span-2 md:col-span-1 h-full flex flex-col justify-between">
+          <div>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 bg-primary-light rounded-lg text-primary">
+                <TrendingUp className="w-5 h-5" />
+              </div>
+              <div className="text-sm font-semibold text-primary/70 uppercase tracking-wider">Overall Progress</div>
             </div>
-            <div className="text-sm font-semibold text-primary/70 uppercase tracking-wider">Overall Progress</div>
+            <div className="text-2xl font-bold text-primary">{overallProgress.toFixed(1)}%</div>
           </div>
-          <div className="text-2xl font-bold text-primary">{overallProgress.toFixed(1)}%</div>
           <div className="h-1.5 w-full bg-stone-200/50 rounded-full mt-3 overflow-hidden">
             <div 
               className="h-full bg-primary rounded-full transition-all"
@@ -123,7 +127,7 @@ export default function GoalsClient({
 
       {/* Goals Grid */}
       {filteredGoals.length === 0 ? (
-        <div className="card border-dashed p-12 text-center flex flex-col items-center justify-center">
+        <div className="card border-dashed border-stone-200 p-12 text-center flex flex-col items-center justify-center">
           <div className="w-16 h-16 rounded-full bg-primary-light/50 text-primary flex items-center justify-center mb-4">
             <Target className="w-7 h-7" />
           </div>
