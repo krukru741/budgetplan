@@ -48,7 +48,7 @@ export default async function AppLayout({
       <Sidebar />
 
       {/* Main Content Area */}
-      <main className="flex-1 flex flex-col min-w-0 pb-20 md:pb-0">
+      <main className="flex-1 flex flex-col min-w-0 pb-32 md:pb-0">
         {children}
       </main>
 
