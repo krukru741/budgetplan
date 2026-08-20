@@ -72,22 +72,27 @@ export default async function DashboardPage() {
       {/* Mobile Top Bar */}
       <div className="md:hidden flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-xl font-display font-bold text-text">
+          <h1 className="text-xl font-display font-bold text-text leading-tight">
             Hello, {profile?.name?.split(' ')[0] || 'there'} 👋
           </h1>
+          <p className="text-xs text-text-secondary mt-0.5">{new Date().toLocaleString('default', { month: 'long', year: 'numeric' })}</p>
         </div>
-        <div className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-display font-bold text-lg shadow-sm">
+        <div className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-display font-bold text-lg shadow-sm shrink-0">
           {profile?.name?.charAt(0).toUpperCase() || 'U'}
         </div>
       </div>
 
       {/* Desktop Header */}
-      <div className="hidden md:flex items-start justify-between mb-8">
+      <div className="hidden md:flex items-center justify-between mb-8">
         <div>
           <h1 className="text-3xl font-display font-bold text-text">
             Hello, {profile?.name?.split(' ')[0] || 'there'} 👋
           </h1>
           <p className="text-text-secondary mt-1 text-lg">Here&apos;s your financial overview</p>
+        </div>
+        <div className="flex items-center gap-4 bg-surface-raised px-4 py-2 rounded-xl shadow-sm border border-border">
+          <CalendarDays className="w-5 h-5 text-text-tertiary" />
+          <span className="font-medium text-text">{new Date().toLocaleString('default', { month: 'long', year: 'numeric' })}</span>
         </div>
       </div>
 
@@ -211,18 +216,18 @@ export default async function DashboardPage() {
           {/* Desktop Quick Actions */}
           <div className="hidden md:block">
             <h2 className="font-semibold text-text text-lg mb-4 opacity-0 select-none">Quick Actions (Hidden Header)</h2>
-            <div className="grid grid-cols-4 gap-3 h-[260px]">
+            <div className="grid grid-cols-4 gap-4">
               {[
                 { name: 'Add Transaction', icon: Plus, href: '/transactions/add', color: 'text-primary' },
                 { name: 'Budget', icon: Wallet, href: '/budget', color: 'text-info' },
                 { name: 'Bills', icon: CalendarDays, href: '/bills', color: 'text-warning' },
                 { name: 'Goals', icon: Target, href: '/goals', color: 'text-success' },
               ].map(item => (
-                <Link key={item.name} href={item.href} className="card p-4 flex flex-col items-center justify-center text-center hover:border-primary/30 transition-colors group shadow-sm h-full">
+                <Link key={item.name} href={item.href} className="card p-4 aspect-square flex flex-col items-center justify-center text-center hover:border-primary/30 transition-colors group shadow-sm">
                   <div className={`w-12 h-12 rounded-full bg-surface-raised flex items-center justify-center mb-3 group-hover:scale-110 transition-transform ${item.color}`}>
                     <item.icon className="w-6 h-6" />
                   </div>
-                  <span className="text-sm font-medium text-text-secondary group-hover:text-text transition-colors">{item.name}</span>
+                  <span className="text-sm font-medium text-text-secondary group-hover:text-text transition-colors line-clamp-2">{item.name}</span>
                 </Link>
               ))}
             </div>
@@ -230,13 +235,13 @@ export default async function DashboardPage() {
 
           {/* Cash Flow Analytics */}
           <div>
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-4 mt-2">
               <h2 className="font-semibold text-text text-lg">Cash Flow (This Month)</h2>
               <Link href="/analytics" className="text-sm font-medium text-primary hover:underline">
                 Details
               </Link>
             </div>
-            <div className="card p-6 shadow-sm flex flex-col justify-between relative overflow-hidden group">
+            <div className="card p-6 shadow-sm flex flex-col justify-between relative overflow-hidden group min-h-[240px]">
               <div className="absolute inset-0 bg-gradient-to-br from-surface to-surface-raised opacity-50"></div>
               
               <div className="relative z-10 flex justify-between items-center mb-6 border-b border-border/50 pb-4">
