@@ -245,7 +245,7 @@
   .input-base::placeholder { color: var(--color-text-secondary); }
   .input-base:focus {
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+    box-shadow: 0 0 0 3px var(--color-primary-light);
   }
   .input-base:disabled { opacity: 0.5; cursor: not-allowed; }
 

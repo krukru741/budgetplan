@@ -7,7 +7,7 @@ import { LayoutDashboard, Wallet, Plus, Target, User } from 'lucide-react'
 const navItems = [
   { name: 'Home', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Budget', href: '/budget', icon: Wallet },
-  { name: 'Add', href: '/add', icon: Plus, isFab: true },
+  { name: 'Add', href: '/transactions?add=true', icon: Plus, isFab: true },
   { name: 'Goals', href: '/goals', icon: Target },
   { name: 'Profile', href: '/settings', icon: User },
 ]

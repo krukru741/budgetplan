@@ -2,8 +2,10 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { Plus, ArrowRightLeft, TrendingDown, TrendingUp, Receipt, Search } from 'lucide-react'
 import Icon from '@/components/ui/Icon'
+import AddTransactionModal from './AddTransactionModal'
 
 type Transaction = {
   id: string
@@ -17,9 +19,32 @@ type Transaction = {
   account: { name: string } | null
 }
 
-export default function TransactionsClient({ initialTransactions }: { initialTransactions: Transaction[] }) {
+type Account = { id: string; name: string; type: string; balance: number }
+type Category = { id: string; name: string; type: string; icon: string | null; group_name: string | null }
+
+export default function TransactionsClient({ 
+  initialTransactions,
+  accounts,
+  categories
+}: { 
+  initialTransactions: Transaction[]
+  accounts: Account[]
+  categories: Category[]
+}) {
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
+  
   const [filter, setFilter] = useState<'all' | 'income' | 'expense' | 'transfer'>('all')
   const [search, setSearch] = useState('')
+  const [isAddModalOpen, setIsAddModalOpen] = useState(searchParams.get('add') === 'true')
+
+  const handleCloseModal = () => {
+    setIsAddModalOpen(false)
+    if (searchParams.get('add')) {
+      router.replace(pathname)
+    }
+  }
 
   // Filter and Search logic
   const filteredTransactions = initialTransactions.filter(tx => {
@@ -78,13 +103,13 @@ export default function TransactionsClient({ initialTransactions }: { initialTra
             <h1 className="text-2xl font-display font-bold text-primary">Transactions</h1>
             <p className="text-text-secondary mt-1">Your recent financial activity</p>
           </div>
-          <Link 
-            href="/transactions/add"
+          <button 
+            onClick={() => setIsAddModalOpen(true)}
             className="hidden md:flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-xl font-medium hover:bg-[#54281f] transition-colors shadow-sm"
           >
             <Plus className="w-5 h-5" />
             Add Transaction
-          </Link>
+          </button>
         </div>
 
         {/* Filters & Search Bar */}
@@ -125,12 +150,12 @@ export default function TransactionsClient({ initialTransactions }: { initialTra
               </div>
               <h3 className="font-semibold text-primary mb-1">No transactions found</h3>
               <p className="text-text-secondary mb-6">Try adjusting your filters or search.</p>
-              <Link 
-                href="/transactions/add"
+              <button 
+                onClick={() => setIsAddModalOpen(true)}
                 className="bg-primary text-white px-6 py-3 rounded-xl font-medium hover:bg-[#54281f] transition-colors"
               >
                 Add transaction
-              </Link>
+              </button>
             </div>
           ) : (
             Object.entries(groupedByDate).map(([dateStr, items]) => (
@@ -228,6 +253,13 @@ export default function TransactionsClient({ initialTransactions }: { initialTra
           </div>
         </div>
       </div>
+
+      <AddTransactionModal 
+        isOpen={isAddModalOpen} 
+        onClose={handleCloseModal} 
+        accounts={accounts}
+        categories={categories}
+      />
     </div>
   )
 }
