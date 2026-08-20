@@ -62,7 +62,8 @@ export default function RegisterPage() {
       if (signUpError.message.includes('already registered')) {
         setError('This email is already registered. Try signing in instead.')
       } else {
-        setError('Something went wrong. Please try again later.')
+        // Show exact error message to help debug
+        setError(signUpError.message)
       }
       setLoading(false)
       return
