@@ -14,6 +14,10 @@ export default async function DashboardPage() {
 
   if (!user) redirect('/login')
 
+  // 0. The Smart RPC Hook: Process any due recurring transactions first!
+  await supabase.rpc('process_recurring_transactions')
+
+  // 1. Fetch Safe to Spend and balances
   const { data, error } = await supabase.rpc('get_safe_to_spend').single()
   
   const safeToSpend = (data as any)?.current_safe_to_spend || 0

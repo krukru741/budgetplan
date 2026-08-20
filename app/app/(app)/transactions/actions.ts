@@ -21,7 +21,7 @@ export async function addTransaction(formData: FormData) {
   if (!category_id || !account_id || !date) throw new Error('Missing required fields')
 
   // Call the Postgres RPC to safely insert and update balances atomically
-  const { data, error } = await supabase.rpc('insert_transaction_v1', {
+  const { data: txId, error } = await supabase.rpc('insert_transaction_v1', {
     p_user_id: user.id,
     p_account_id: account_id,
     p_category_id: category_id,
@@ -35,6 +35,39 @@ export async function addTransaction(formData: FormData) {
   if (error) {
     console.error('Transaction RPC Error:', error)
     throw new Error(error.message || 'Failed to insert transaction')
+  }
+
+  // Handle Recurring Transaction Setup
+  const is_recurring = formData.get('is_recurring') === 'on'
+  if (is_recurring) {
+    const frequency = formData.get('frequency') as string
+    const end_date = formData.get('end_date') as string || null
+
+    // Calculate the next date based on the chosen frequency
+    const nextDateObj = new Date(date)
+    if (frequency === 'daily') nextDateObj.setDate(nextDateObj.getDate() + 1)
+    if (frequency === 'weekly') nextDateObj.setDate(nextDateObj.getDate() + 7)
+    if (frequency === 'monthly') nextDateObj.setMonth(nextDateObj.getMonth() + 1)
+    if (frequency === 'yearly') nextDateObj.setFullYear(nextDateObj.getFullYear() + 1)
+    
+    const next_date = nextDateObj.toISOString().split('T')[0]
+
+    const { error: recError } = await supabase.from('recurring_transactions').insert({
+      user_id: user.id,
+      account_id,
+      category_id,
+      type,
+      amount,
+      description: description || null,
+      frequency,
+      next_date,
+      end_date,
+      status: 'active'
+    })
+
+    if (recError) {
+      console.error('Failed to setup recurring transaction:', recError)
+    }
   }
 
   revalidatePath('/dashboard')

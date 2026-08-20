@@ -22,6 +22,7 @@ export default function AddTransactionModal({
   const [error, setError] = useState<string | null>(null)
   
   const [tab, setTab] = useState<'expense' | 'income' | 'transfer'>('expense')
+  const [isRecurring, setIsRecurring] = useState(false)
   
   if (!isOpen) return null
 
@@ -92,7 +93,7 @@ export default function AddTransactionModal({
               <button
                 key={t}
                 type="button"
-                onClick={() => { setTab(t); setError(null); }}
+                onClick={() => { setTab(t); setError(null); setIsRecurring(false); }}
                 className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-colors capitalize ${
                   tab === t 
                     ? 'bg-primary-light text-primary shadow-sm'
@@ -210,6 +211,46 @@ export default function AddTransactionModal({
                 className="input-base hover:border-primary/50 focus:border-primary focus:ring-[3px] focus:ring-primary-light text-primary"
               />
             </div>
+
+            {/* Recurring Toggle (Only for Income & Expense) */}
+            {tab !== 'transfer' && (
+              <div className="bg-primary-light/10 border border-primary/20 rounded-xl p-4 space-y-4">
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="is_recurring"
+                    checked={isRecurring}
+                    onChange={(e) => setIsRecurring(e.target.checked)}
+                    className="w-5 h-5 rounded border-primary/30 text-primary focus:ring-primary-light"
+                  />
+                  <span className="text-sm font-bold text-primary">Make this a recurring transaction</span>
+                </label>
+                
+                {isRecurring && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2 border-t border-primary/10">
+                    <div>
+                      <label htmlFor="frequency" className="block text-xs font-semibold text-primary/80 mb-1.5 uppercase tracking-wider">Frequency</label>
+                      <select id="frequency" name="frequency" required className="input-base hover:border-primary/50 focus:border-primary focus:ring-[3px] focus:ring-primary-light text-primary bg-white">
+                        <option value="monthly">Monthly</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="daily">Daily</option>
+                        <option value="yearly">Yearly</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label htmlFor="end_date" className="block text-xs font-semibold text-primary/80 mb-1.5 uppercase tracking-wider">End Date (Optional)</label>
+                      <input
+                        id="end_date"
+                        name="end_date"
+                        type="date"
+                        min={today}
+                        className="input-base hover:border-primary/50 focus:border-primary focus:ring-[3px] focus:ring-primary-light text-primary bg-white [color-scheme:light]"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </form>
         </div>
 
