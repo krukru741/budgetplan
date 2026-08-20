@@ -114,15 +114,15 @@ export default function TransactionsClient({
 
         {/* Filters & Search Bar */}
         <div className="mt-6 flex flex-col md:flex-row gap-4 items-center justify-between">
-          <div className="flex bg-surface-raised p-1 rounded-xl w-full md:w-auto">
+          <div className="flex bg-surface-raised p-1 rounded-xl w-full md:w-auto h-11">
             {['all', 'income', 'expense', 'transfer'].map((t) => (
               <button
                 key={t}
                 onClick={() => setFilter(t as any)}
-                className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-semibold rounded-lg capitalize transition-colors ${
+                className={`flex-1 md:flex-none px-4 py-1.5 text-sm rounded-lg capitalize transition-colors ${
                   filter === t 
-                    ? 'bg-white text-primary shadow-sm' 
-                    : 'text-text-secondary hover:text-text hover:bg-white/50'
+                    ? 'bg-primary-light text-primary font-bold shadow-sm' 
+                    : 'text-text-secondary font-medium hover:text-text hover:bg-white/50'
                 }`}
               >
                 {t}
@@ -130,14 +130,14 @@ export default function TransactionsClient({
             ))}
           </div>
           
-          <div className="relative w-full md:w-64">
+          <div className="relative w-full md:w-64 h-11">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-tertiary" />
             <input 
               type="text" 
               placeholder="Search transactions..."
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className="w-full bg-surface-raised border-none rounded-xl py-2 pl-9 pr-4 text-sm focus:ring-1 focus:ring-primary transition-all text-primary placeholder-text-tertiary"
+              className="w-full h-full bg-white/80 border border-stone-200/80 rounded-xl pl-9 pr-4 text-sm focus:outline-none focus:ring-[3px] focus:ring-primary-light focus:border-primary transition-all text-primary placeholder-stone-400"
             />
           </div>
         </div>
@@ -146,7 +146,7 @@ export default function TransactionsClient({
           {displayItems.length === 0 ? (
             <div className="card border-dashed p-12 text-center flex flex-col items-center justify-center">
               <div className="w-16 h-16 rounded-full bg-primary-light/50 text-primary flex items-center justify-center mb-4">
-                <Receipt className="w-8 h-8" />
+                <Receipt className="w-7 h-7" />
               </div>
               <h3 className="font-semibold text-primary mb-1">No transactions found</h3>
               <p className="text-text-secondary mb-6">Try adjusting your filters or search.</p>
@@ -158,9 +158,9 @@ export default function TransactionsClient({
               </button>
             </div>
           ) : (
-            Object.entries(groupedByDate).map(([dateStr, items]) => (
-              <div key={dateStr} className="space-y-3">
-                <div className="sticky top-16 md:static z-10 py-1 bg-background/80 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none -mx-2 px-2">
+            Object.entries(groupedByDate).map(([dateStr, items], index) => (
+              <div key={dateStr} className={`space-y-3 ${index === 0 ? 'mt-4' : ''}`}>
+                <div className="sticky top-16 md:static z-10 py-1 bg-background/80 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none -mx-2 px-2 mb-2">
                   <h3 className="px-3 py-1 bg-primary-light text-primary rounded-full text-xs font-semibold w-fit tracking-wider shadow-sm">
                     {dateStr}
                   </h3>
@@ -172,7 +172,7 @@ export default function TransactionsClient({
                     const transferAmount = inflow ? inflow.amount : (outflow ? Math.abs(outflow.amount) : 0)
                     
                     return (
-                      <div key={item.transfer_id} className="card p-4 flex items-center justify-between hover:border-primary/30 hover:bg-primary-light/10 transition-colors group cursor-pointer">
+                      <div key={item.transfer_id} className="card p-4 flex items-center justify-between hover:border-primary/30 hover:bg-primary-light/10 hover:shadow-md transition-all group cursor-pointer">
                         <div className="flex items-center gap-4">
                           <div className="w-10 h-10 rounded-full bg-primary-light text-primary flex items-center justify-center shrink-0 transition-transform group-hover:scale-105">
                             <ArrowRightLeft className="w-5 h-5" />
@@ -198,7 +198,7 @@ export default function TransactionsClient({
 
                   const isExpense = item.type === 'expense'
                   return (
-                    <div key={item.id} className="card p-4 flex items-center justify-between hover:border-primary/30 hover:bg-primary-light/10 transition-colors group cursor-pointer">
+                    <div key={item.id} className="card p-4 flex items-center justify-between hover:border-primary/30 hover:bg-primary-light/10 hover:shadow-md transition-all group cursor-pointer">
                       <div className="flex items-center gap-4">
                         <div className="w-10 h-10 rounded-full bg-primary-light text-primary flex items-center justify-center shrink-0 transition-transform group-hover:scale-105">
                           {item.category?.icon ? <Icon name={item.category.icon} className="w-5 h-5" /> : (isExpense ? <TrendingDown className="w-5 h-5"/> : <TrendingUp className="w-5 h-5"/>)}
