@@ -144,3 +144,20 @@ function LoginForm() {
     </div>
   )
 }
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="card card-lg animate-pulse">
+        <div className="h-8 skeleton mb-6 w-48" />
+        <div className="space-y-5">
+          <div className="h-12 skeleton" />
+          <div className="h-12 skeleton" />
+          <div className="h-12 skeleton" />
+        </div>
+      </div>
+    }>
+      <LoginForm />
+    </Suspense>
+  )
+}
