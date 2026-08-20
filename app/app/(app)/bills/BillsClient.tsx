@@ -32,13 +32,13 @@ export default function BillsClient({
       <div key={bill.id} className={`card p-4 flex flex-col gap-4 transition-colors ${isPaid ? 'opacity-60 bg-surface-raised' : 'hover:border-primary/30'}`}>
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
-            <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
-              isPaid ? 'bg-success-light/50 text-success' : isOverdue ? 'bg-danger-light text-danger' : 'bg-warning-light text-warning'
+            <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 shadow-sm ${
+              isPaid ? 'bg-success-light/50 text-success' : isOverdue ? 'bg-danger-light text-danger' : 'bg-primary-light text-primary'
             }`}>
               {bill.category?.icon ? <Icon name={bill.category.icon} className="w-5 h-5" /> : <Receipt className="w-5 h-5" />}
             </div>
             <div>
-              <h3 className="font-semibold text-text leading-tight">{bill.name}</h3>
+              <h3 className="font-semibold text-primary leading-tight">{bill.name}</h3>
               <div className="text-xs text-text-secondary mt-0.5 flex items-center gap-1">
                 <CalendarDays className="w-3 h-3" />
                 {isOverdue ? <span className="text-danger font-medium">Overdue {new Date(bill.due_date).toLocaleDateString()}</span> : `Due ${new Date(bill.due_date).toLocaleDateString()}`}
@@ -50,7 +50,7 @@ export default function BillsClient({
             {!isPaid && (
               <button 
                 onClick={() => setPayingBill(bill)}
-                className="text-xs font-medium bg-primary text-white px-3 py-1.5 rounded-lg hover:bg-primary-hover transition-colors shadow-sm"
+                className="text-xs font-semibold bg-primary text-white px-4 py-2 rounded-xl hover:bg-primary-hover transition-colors shadow-sm"
               >
                 Pay
               </button>
@@ -66,12 +66,12 @@ export default function BillsClient({
 
         <div className="pt-3 border-t border-border flex justify-between items-end">
           <div>
-            <div className="text-xs font-medium text-text-secondary mb-1">Total Bill</div>
-            <div className="font-semibold text-text">₱{Number(bill.original_amount).toLocaleString()}</div>
+            <div className="text-xs font-semibold text-primary/70 uppercase tracking-wider mb-1">Total Bill</div>
+            <div className="font-semibold text-primary">₱{Number(bill.original_amount).toLocaleString()}</div>
           </div>
           <div className="text-right">
-            <div className="text-xs font-medium text-text-secondary mb-1">Remaining</div>
-            <div className={`font-semibold tabular-nums text-lg ${isPaid ? 'text-success' : isOverdue ? 'text-danger' : 'text-text'}`}>
+            <div className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-1">Remaining</div>
+            <div className={`font-bold tabular-nums text-lg ${isPaid ? 'text-success' : isOverdue ? 'text-danger' : 'text-primary'}`}>
               ₱{remaining.toLocaleString()}
             </div>
           </div>
@@ -83,18 +83,18 @@ export default function BillsClient({
   const hasNoBills = overdueBills.length === 0 && upcomingBills.length === 0 && paidBills.length === 0
 
   return (
-    <div className="page-container animate-fade-in max-w-5xl mx-auto">
-      <div className="section-header">
+    <div className="page-container animate-fade-in w-full max-w-7xl mx-auto pb-28 md:pb-8 flex flex-col gap-8">
+      <div className="section-header flex items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-display font-bold text-text">Bills & Subscriptions</h1>
-          <p className="text-text-secondary mt-1">Manage your recurring payments and obligations</p>
+          <h1 className="text-2xl font-display font-bold text-primary">Bills & Subscriptions</h1>
+          <p className="text-text-secondary mt-1 hidden md:block">Manage your recurring payments and obligations</p>
         </div>
         <Link 
           href="/bills/add"
-          className="hidden md:flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-xl font-medium hover:bg-primary-hover transition-colors shadow-sm"
+          className="flex items-center justify-center gap-2 bg-primary text-white p-2.5 md:px-4 md:py-2 rounded-xl font-medium hover:bg-primary-hover transition-colors shadow-sm shrink-0"
         >
           <Plus className="w-5 h-5" />
-          Add Bill
+          <span className="hidden md:inline">Add Bill</span>
         </Link>
       </div>
 
