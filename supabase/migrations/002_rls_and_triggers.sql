@@ -24,6 +24,11 @@ BEGIN
     'transactions', 'recurring_transactions', 'budgets',
     'bills', 'goals', 'debts'
   ] LOOP
+    -- Drop first to allow re-runs (idempotent)
+    EXECUTE format(
+      'DROP TRIGGER IF EXISTS trg_%s_updated_at ON public.%s',
+      t, t
+    );
     EXECUTE format(
       'CREATE TRIGGER trg_%s_updated_at
        BEFORE UPDATE ON public.%s
