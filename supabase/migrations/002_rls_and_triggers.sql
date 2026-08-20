@@ -132,6 +132,7 @@ ALTER TABLE public.audit_logs          ENABLE ROW LEVEL SECURITY;
 -- ----------------------------------------------------------------
 -- RLS Policies — users
 -- ----------------------------------------------------------------
+DROP POLICY IF EXISTS "users: own row only" ON public.users;
 CREATE POLICY "users: own row only"
   ON public.users FOR ALL
   USING (auth.uid() = id)
@@ -140,6 +141,7 @@ CREATE POLICY "users: own row only"
 -- ----------------------------------------------------------------
 -- RLS Policies — user_preferences
 -- ----------------------------------------------------------------
+DROP POLICY IF EXISTS "user_preferences: own only" ON public.user_preferences;
 CREATE POLICY "user_preferences: own only"
   ON public.user_preferences FOR ALL
   USING (auth.uid() = user_id)
@@ -148,6 +150,7 @@ CREATE POLICY "user_preferences: own only"
 -- ----------------------------------------------------------------
 -- RLS Policies — accounts
 -- ----------------------------------------------------------------
+DROP POLICY IF EXISTS "accounts: own only" ON public.accounts;
 CREATE POLICY "accounts: own only"
   ON public.accounts FOR ALL
   USING (auth.uid() = user_id)
@@ -156,6 +159,7 @@ CREATE POLICY "accounts: own only"
 -- ----------------------------------------------------------------
 -- RLS Policies — categories
 -- ----------------------------------------------------------------
+DROP POLICY IF EXISTS "categories: own only" ON public.categories;
 CREATE POLICY "categories: own only"
   ON public.categories FOR ALL
   USING (auth.uid() = user_id)
@@ -164,6 +168,7 @@ CREATE POLICY "categories: own only"
 -- ----------------------------------------------------------------
 -- RLS Policies — transactions
 -- ----------------------------------------------------------------
+DROP POLICY IF EXISTS "transactions: own only" ON public.transactions;
 CREATE POLICY "transactions: own only"
   ON public.transactions FOR ALL
   USING (auth.uid() = user_id)
@@ -172,6 +177,7 @@ CREATE POLICY "transactions: own only"
 -- ----------------------------------------------------------------
 -- RLS Policies — receipts (access via transaction ownership)
 -- ----------------------------------------------------------------
+DROP POLICY IF EXISTS "receipts: own transactions only" ON public.receipts;
 CREATE POLICY "receipts: own transactions only"
   ON public.receipts FOR ALL
   USING (
@@ -185,6 +191,7 @@ CREATE POLICY "receipts: own transactions only"
 -- ----------------------------------------------------------------
 -- RLS Policies — recurring_transactions
 -- ----------------------------------------------------------------
+DROP POLICY IF EXISTS "recurring_transactions: own only" ON public.recurring_transactions;
 CREATE POLICY "recurring_transactions: own only"
   ON public.recurring_transactions FOR ALL
   USING (auth.uid() = user_id)
@@ -193,6 +200,7 @@ CREATE POLICY "recurring_transactions: own only"
 -- ----------------------------------------------------------------
 -- RLS Policies — budgets
 -- ----------------------------------------------------------------
+DROP POLICY IF EXISTS "budgets: own only" ON public.budgets;
 CREATE POLICY "budgets: own only"
   ON public.budgets FOR ALL
   USING (auth.uid() = user_id)
@@ -201,6 +209,7 @@ CREATE POLICY "budgets: own only"
 -- ----------------------------------------------------------------
 -- RLS Policies — bills
 -- ----------------------------------------------------------------
+DROP POLICY IF EXISTS "bills: own only" ON public.bills;
 CREATE POLICY "bills: own only"
   ON public.bills FOR ALL
   USING (auth.uid() = user_id)
@@ -209,6 +218,7 @@ CREATE POLICY "bills: own only"
 -- ----------------------------------------------------------------
 -- RLS Policies — bill_payments (access via bill ownership)
 -- ----------------------------------------------------------------
+DROP POLICY IF EXISTS "bill_payments: own bills only" ON public.bill_payments;
 CREATE POLICY "bill_payments: own bills only"
   ON public.bill_payments FOR ALL
   USING (
@@ -222,6 +232,7 @@ CREATE POLICY "bill_payments: own bills only"
 -- ----------------------------------------------------------------
 -- RLS Policies — goals
 -- ----------------------------------------------------------------
+DROP POLICY IF EXISTS "goals: own only" ON public.goals;
 CREATE POLICY "goals: own only"
   ON public.goals FOR ALL
   USING (auth.uid() = user_id)
@@ -230,6 +241,7 @@ CREATE POLICY "goals: own only"
 -- ----------------------------------------------------------------
 -- RLS Policies — goal_contributions (access via goal ownership)
 -- ----------------------------------------------------------------
+DROP POLICY IF EXISTS "goal_contributions: own goals only" ON public.goal_contributions;
 CREATE POLICY "goal_contributions: own goals only"
   ON public.goal_contributions FOR ALL
   USING (
@@ -243,6 +255,7 @@ CREATE POLICY "goal_contributions: own goals only"
 -- ----------------------------------------------------------------
 -- RLS Policies — debts
 -- ----------------------------------------------------------------
+DROP POLICY IF EXISTS "debts: own only" ON public.debts;
 CREATE POLICY "debts: own only"
   ON public.debts FOR ALL
   USING (auth.uid() = user_id)
@@ -251,6 +264,7 @@ CREATE POLICY "debts: own only"
 -- ----------------------------------------------------------------
 -- RLS Policies — debt_payments (access via debt ownership)
 -- ----------------------------------------------------------------
+DROP POLICY IF EXISTS "debt_payments: own debts only" ON public.debt_payments;
 CREATE POLICY "debt_payments: own debts only"
   ON public.debt_payments FOR ALL
   USING (
@@ -264,6 +278,7 @@ CREATE POLICY "debt_payments: own debts only"
 -- ----------------------------------------------------------------
 -- RLS Policies — transfers
 -- ----------------------------------------------------------------
+DROP POLICY IF EXISTS "transfers: own only" ON public.transfers;
 CREATE POLICY "transfers: own only"
   ON public.transfers FOR ALL
   USING (auth.uid() = user_id)
@@ -272,6 +287,7 @@ CREATE POLICY "transfers: own only"
 -- ----------------------------------------------------------------
 -- RLS Policies — notifications
 -- ----------------------------------------------------------------
+DROP POLICY IF EXISTS "notifications: own only" ON public.notifications;
 CREATE POLICY "notifications: own only"
   ON public.notifications FOR ALL
   USING (auth.uid() = user_id)
@@ -280,6 +296,7 @@ CREATE POLICY "notifications: own only"
 -- ----------------------------------------------------------------
 -- RLS Policies — monthly_reports
 -- ----------------------------------------------------------------
+DROP POLICY IF EXISTS "monthly_reports: own only" ON public.monthly_reports;
 CREATE POLICY "monthly_reports: own only"
   ON public.monthly_reports FOR ALL
   USING (auth.uid() = user_id)
@@ -288,10 +305,12 @@ CREATE POLICY "monthly_reports: own only"
 -- ----------------------------------------------------------------
 -- RLS Policies — audit_logs (read + insert only; no update/delete)
 -- ----------------------------------------------------------------
+DROP POLICY IF EXISTS "audit_logs: own read" ON public.audit_logs;
 CREATE POLICY "audit_logs: own read"
   ON public.audit_logs FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "audit_logs: own insert" ON public.audit_logs;
 CREATE POLICY "audit_logs: own insert"
   ON public.audit_logs FOR INSERT
   WITH CHECK (auth.uid() = user_id);
