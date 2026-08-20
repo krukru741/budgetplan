@@ -70,12 +70,13 @@ export default function BudgetClient({
       <section className="mb-8">
         <h2 className="text-lg font-semibold text-primary mb-4">{title}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {groupBudgets.map(b => {
+          {groupBudgets.map((b, index) => {
             const progress = b.effective_budget > 0 ? (b.spent_amount / b.effective_budget) * 100 : 0
             const isOver = b.spent_amount > b.effective_budget
+            const isLastOdd = index === groupBudgets.length - 1 && groupBudgets.length % 2 !== 0
             
             return (
-              <div key={b.category_id} className="card p-3.5 hover:border-primary/30 hover:bg-primary-light/10 transition-colors group">
+              <div key={b.category_id} className={`card p-3.5 hover:border-primary/30 hover:bg-primary-light/10 transition-colors group ${isLastOdd ? 'md:col-span-2' : ''}`}>
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-primary-light flex items-center justify-center text-primary shrink-0 transition-transform group-hover:scale-105">
@@ -101,9 +102,9 @@ export default function BudgetClient({
                 </div>
                 
                 {/* Progress Bar */}
-                <div className="h-2.5 w-full bg-surface-raised rounded-full overflow-hidden mb-2">
+                <div className="h-2.5 w-full bg-stone-200/50 rounded-full overflow-hidden mb-2">
                   <div 
-                    className={`h-full rounded-full transition-all ${isOver ? 'bg-danger' : 'bg-primary'}`}
+                    className={`h-full rounded-full transition-all ${isOver ? 'bg-danger' : (b.effective_budget > 0 ? 'bg-primary' : 'bg-transparent')}`}
                     style={{ width: `${Math.min(progress, 100)}%` }}
                   />
                 </div>
@@ -145,19 +146,19 @@ export default function BudgetClient({
       {/* Overview Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 w-full gap-4 mb-8">
         <div className="card p-4">
-          <div className="text-xs font-medium text-text-secondary mb-1">Income</div>
+          <div className="text-xs font-semibold text-primary/70 mb-1">Income</div>
           <div className="text-lg font-semibold text-text">₱{totals.income.toLocaleString()}</div>
         </div>
         <div className="card p-4">
-          <div className="text-xs font-medium text-text-secondary mb-1">Budgeted</div>
-          <div className="text-lg font-semibold text-info">₱{totals.budgeted.toLocaleString()}</div>
+          <div className="text-xs font-semibold text-primary/70 mb-1">Budgeted</div>
+          <div className="text-lg font-semibold text-primary">₱{totals.budgeted.toLocaleString()}</div>
         </div>
         <div className="card p-4">
-          <div className="text-xs font-medium text-text-secondary mb-1">Spent</div>
+          <div className="text-xs font-semibold text-primary/70 mb-1">Spent</div>
           <div className="text-lg font-semibold text-danger">₱{totals.spent.toLocaleString()}</div>
         </div>
         <div className="card p-4">
-          <div className="text-xs font-medium text-text-secondary mb-1">Unallocated</div>
+          <div className="text-xs font-semibold text-primary/70 mb-1">Unallocated</div>
           <div className={`text-lg font-semibold ${totals.unallocated < 0 ? 'text-danger' : 'text-success'}`}>
             ₱{totals.unallocated.toLocaleString()}
           </div>
