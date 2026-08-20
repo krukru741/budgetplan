@@ -59,7 +59,7 @@ export function Sidebar() {
               href={item.href}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors ${
                 isActive 
-                  ? 'bg-primary/10 text-primary' 
+                  ? 'bg-primary-light text-primary' 
                   : 'text-text-secondary hover:bg-surface-raised hover:text-text'
               }`}
             >
