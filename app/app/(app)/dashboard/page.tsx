@@ -90,9 +90,9 @@ export default async function DashboardPage() {
           </h1>
           <p className="text-text-secondary mt-1 text-lg">Here&apos;s your financial overview</p>
         </div>
-        <button className="flex items-center gap-4 bg-surface-raised hover:bg-primary-light px-4 py-2 rounded-xl shadow-sm border border-border hover:border-primary/20 transition-colors cursor-pointer group">
-          <CalendarDays className="w-5 h-5 text-text-tertiary group-hover:text-primary transition-colors" />
-          <span className="font-medium text-text group-hover:text-primary transition-colors">{new Date().toLocaleString('default', { month: 'long', year: 'numeric' })}</span>
+        <button className="flex items-center gap-4 bg-primary-light hover:brightness-95 px-4 py-2 rounded-xl shadow-sm border border-transparent transition-all cursor-pointer group">
+          <CalendarDays className="w-5 h-5 text-primary" />
+          <span className="font-medium text-primary">{new Date().toLocaleString('default', { month: 'long', year: 'numeric' })}</span>
         </button>
       </div>
 
@@ -135,11 +135,11 @@ export default async function DashboardPage() {
               { name: 'Bills', icon: CalendarDays, href: '/bills' },
               { name: 'Goals', icon: Target, href: '/goals' },
             ].map(item => (
-              <Link key={item.name} href={item.href} className="card py-3 px-2 flex flex-col items-center justify-center text-center hover:bg-surface-raised transition-colors group shadow-sm">
-                <div className="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mb-2 group-hover:scale-110 transition-transform text-primary">
+              <Link key={item.name} href={item.href} className="card py-2 px-2 flex flex-col items-center justify-center text-center hover:bg-primary-light/50 transition-colors group shadow-sm">
+                <div className="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mb-1.5 group-hover:scale-110 transition-transform text-primary">
                   <item.icon className="w-5 h-5" />
                 </div>
-                <span className="text-xs font-medium text-text-secondary">{item.name}</span>
+                <span className="text-[11px] font-medium text-text-secondary">{item.name}</span>
               </Link>
             ))}
           </div>
@@ -147,13 +147,13 @@ export default async function DashboardPage() {
           {/* Recent Transactions */}
           <div className="flex-1 flex flex-col min-h-0">
             <div className="flex items-center justify-between mb-4 shrink-0">
-              <h2 className="font-semibold text-text text-lg">Recent Transactions</h2>
+              <h2 className="font-semibold text-primary text-lg">Recent Transactions</h2>
               <Link href="/transactions" className="text-sm font-medium text-primary hover:underline">
                 View all
               </Link>
             </div>
             
-            <div className="space-y-3">
+            <div className="flex-1 flex flex-col gap-3 justify-start h-full">
               {!recentTransactions || recentTransactions.length === 0 ? (
                 <div className="card p-6 text-center text-text-secondary text-sm border-dashed">
                   No recent transactions.
@@ -162,7 +162,7 @@ export default async function DashboardPage() {
                 recentTransactions.map((item: any) => {
                   if (item.type === 'transfer') {
                     return (
-                      <div key={item.id} className="card p-4 flex items-center justify-between hover:bg-surface-raised transition-colors shadow-sm">
+                      <div key={item.id} className="card p-4 flex items-center justify-between hover:bg-primary-light/50 transition-colors shadow-sm">
                         <div className="flex items-center gap-4">
                           <div className="w-10 h-10 rounded-full bg-info-light text-info flex items-center justify-center shrink-0">
                             <ArrowRightLeft className="w-5 h-5" />
@@ -183,7 +183,7 @@ export default async function DashboardPage() {
 
                   const isExpense = item.type === 'expense'
                   return (
-                    <div key={item.id} className="card p-4 flex items-center justify-between hover:bg-surface-raised transition-colors shadow-sm">
+                    <div key={item.id} className="card p-4 flex items-center justify-between hover:bg-primary-light/50 transition-colors shadow-sm">
                       <div className="flex items-center gap-4">
                         <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
                           isExpense ? 'bg-danger-light text-danger' : 'bg-success-light text-success'
@@ -223,11 +223,11 @@ export default async function DashboardPage() {
                 { name: 'Bills', icon: CalendarDays, href: '/bills' },
                 { name: 'Goals', icon: Target, href: '/goals' },
               ].map(item => (
-                <Link key={item.name} href={item.href} className="card p-4 aspect-square flex flex-col items-center justify-center text-center hover:border-primary/30 transition-colors group shadow-sm">
+                <Link key={item.name} href={item.href} className="card p-4 aspect-square flex flex-col items-center justify-center text-center hover:bg-primary-light/50 transition-colors group shadow-sm">
                   <div className="w-12 h-12 rounded-full bg-primary-light flex items-center justify-center mb-3 group-hover:scale-110 transition-transform text-primary">
                     <item.icon className="w-6 h-6" />
                   </div>
-                  <span className="text-sm font-medium text-text-secondary group-hover:text-text transition-colors line-clamp-2">{item.name}</span>
+                  <span className="text-sm font-medium text-text-secondary group-hover:text-primary transition-colors line-clamp-2">{item.name}</span>
                 </Link>
               ))}
             </div>
@@ -236,7 +236,7 @@ export default async function DashboardPage() {
           {/* Cash Flow Analytics */}
           <div className="flex-1 flex flex-col min-h-0">
             <div className="flex items-center justify-between mb-4 shrink-0">
-              <h2 className="font-semibold text-text text-lg">Cash Flow (This Month)</h2>
+              <h2 className="font-semibold text-primary text-lg">Cash Flow (This Month)</h2>
               <Link href="/analytics" className="text-sm font-medium text-primary hover:underline">
                 Details
               </Link>
@@ -258,31 +258,31 @@ export default async function DashboardPage() {
               <div className="relative z-10 flex-1 flex gap-10 w-full items-end justify-center px-4 mt-2">
                 
                 {/* Income Bar */}
-                <div className="flex flex-col items-center justify-end h-full w-24">
-                  <span className="text-xs font-semibold text-success mb-2 opacity-0 group-hover:opacity-100 transition-opacity h-4">
-                    +{totalIncome > 1000 ? (totalIncome/1000).toFixed(1) + 'k' : totalIncome}
+                <div className="flex flex-col items-center justify-end h-full w-24 group/bar">
+                  <span className="text-xs font-semibold text-success mb-2 transition-transform group-hover/bar:-translate-y-1">
+                    +₱{totalIncome > 1000 ? (totalIncome/1000).toFixed(1) + 'k' : totalIncome}
                   </span>
                   <div className="h-32 w-full flex items-end justify-center">
                     <div 
-                      className="w-full bg-success-light rounded-t-md relative group-hover:bg-success/20 transition-all duration-1000 ease-out"
+                      className="w-full bg-success-light rounded-t-md relative group-hover/bar:bg-success/20 transition-all duration-1000 ease-out"
                       style={{ height: `${incomeHeight}%` }}
                     ></div>
                   </div>
-                  <span className="text-xs font-bold text-success uppercase tracking-widest mt-2 h-4">In</span>
+                  <span className="text-xs font-semibold text-text-secondary uppercase tracking-widest mt-2 h-4">In</span>
                 </div>
 
                 {/* Expense Bar */}
-                <div className="flex flex-col items-center justify-end h-full w-24">
-                  <span className="text-xs font-semibold text-danger mb-2 opacity-0 group-hover:opacity-100 transition-opacity h-4">
-                    -{totalExpense > 1000 ? (totalExpense/1000).toFixed(1) + 'k' : totalExpense}
+                <div className="flex flex-col items-center justify-end h-full w-24 group/bar">
+                  <span className="text-xs font-semibold text-danger mb-2 transition-transform group-hover/bar:-translate-y-1">
+                    -₱{totalExpense > 1000 ? (totalExpense/1000).toFixed(1) + 'k' : totalExpense}
                   </span>
                   <div className="h-32 w-full flex items-end justify-center">
                     <div 
-                      className="w-full bg-danger-light rounded-t-md relative group-hover:bg-danger/20 transition-all duration-1000 ease-out"
+                      className="w-full bg-danger-light rounded-t-md relative group-hover/bar:bg-danger/20 transition-all duration-1000 ease-out"
                       style={{ height: `${expenseHeight}%` }}
                     ></div>
                   </div>
-                  <span className="text-xs font-bold text-danger uppercase tracking-widest mt-2 h-4">Out</span>
+                  <span className="text-xs font-semibold text-text-secondary uppercase tracking-widest mt-2 h-4">Out</span>
                 </div>
 
               </div>
