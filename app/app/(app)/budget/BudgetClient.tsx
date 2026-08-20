@@ -68,21 +68,21 @@ export default function BudgetClient({
     if (groupBudgets.length === 0) return null
     return (
       <section className="mb-8">
-        <h2 className="text-lg font-semibold text-text mb-4">{title}</h2>
+        <h2 className="text-lg font-semibold text-primary mb-4">{title}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {groupBudgets.map(b => {
             const progress = b.effective_budget > 0 ? (b.spent_amount / b.effective_budget) * 100 : 0
             const isOver = b.spent_amount > b.effective_budget
             
             return (
-              <div key={b.category_id} className="card p-3.5 hover:border-primary/30 transition-colors">
+              <div key={b.category_id} className="card p-3.5 hover:border-primary/30 hover:bg-primary-light/10 transition-colors group">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-surface-raised flex items-center justify-center text-text shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-primary-light flex items-center justify-center text-primary shrink-0 transition-transform group-hover:scale-105">
                       <Icon name={b.icon} className="w-5 h-5" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-text">{b.name}</h3>
+                      <h3 className="font-semibold text-primary">{b.name}</h3>
                       <div className="text-xs text-text-secondary">
                         {b.budget_amount === 0 
                           ? 'Not budgeted' 
@@ -94,16 +94,16 @@ export default function BudgetClient({
                   </div>
                   <button 
                     onClick={() => setEditingCategory(b)}
-                    className="p-2 text-text-secondary hover:text-primary hover:bg-primary-light rounded-lg transition-colors"
+                    className="p-2 text-primary/70 hover:text-primary hover:bg-primary-light rounded-lg transition-colors"
                   >
                     <Edit2 className="w-4 h-4" />
                   </button>
                 </div>
                 
                 {/* Progress Bar */}
-                <div className="h-2.5 w-full bg-primary-light/50 rounded-full overflow-hidden mb-2">
+                <div className="h-2.5 w-full bg-surface-raised rounded-full overflow-hidden mb-2">
                   <div 
-                    className={`h-full rounded-full transition-all ${isOver ? 'bg-danger' : progress > 80 ? 'bg-warning' : 'bg-primary'}`}
+                    className={`h-full rounded-full transition-all ${isOver ? 'bg-danger' : 'bg-primary'}`}
                     style={{ width: `${Math.min(progress, 100)}%` }}
                   />
                 </div>
@@ -128,15 +128,15 @@ export default function BudgetClient({
     <div className="page-container animate-fade-in w-full max-w-7xl mx-auto pb-24 md:pb-8">
       {/* Header & Month Navigation */}
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-display font-bold text-text">Budget</h1>
-        <div className="flex items-center bg-surface-raised rounded-xl p-1">
-          <button onClick={() => changeMonth(-1)} className="p-2 hover:bg-surface rounded-lg transition-colors text-text-secondary">
+        <h1 className="text-2xl font-display font-bold text-primary">Budget</h1>
+        <div className="flex items-center bg-primary-light rounded-xl p-1 shadow-sm border border-transparent">
+          <button onClick={() => changeMonth(-1)} className="p-2 hover:bg-white/50 rounded-lg transition-colors text-primary">
             <ChevronLeft className="w-5 h-5" />
           </button>
-          <div className="px-4 font-semibold text-text min-w-[140px] text-center">
+          <div className="px-4 font-semibold text-primary min-w-[140px] text-center">
             {monthName} {year}
           </div>
-          <button onClick={() => changeMonth(1)} className="p-2 hover:bg-surface rounded-lg transition-colors text-text-secondary">
+          <button onClick={() => changeMonth(1)} className="p-2 hover:bg-white/50 rounded-lg transition-colors text-primary">
             <ChevronRight className="w-5 h-5" />
           </button>
         </div>

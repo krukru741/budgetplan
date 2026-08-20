@@ -46,8 +46,8 @@ export default function EditBudgetModal({
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
       <div className="bg-surface rounded-2xl shadow-xl w-full max-w-md overflow-hidden animate-slide-up">
         <div className="flex items-center justify-between p-4 border-b border-border">
-          <h2 className="text-lg font-semibold text-text">Edit Budget</h2>
-          <button onClick={onClose} className="p-2 -mr-2 rounded-xl text-text-secondary hover:bg-surface-raised transition-colors">
+          <h2 className="text-lg font-semibold text-primary">Edit Budget</h2>
+          <button onClick={onClose} className="p-2 -mr-2 rounded-xl text-text-secondary hover:text-primary hover:bg-primary-light transition-colors">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -60,11 +60,11 @@ export default function EditBudgetModal({
           )}
 
           <div className="mb-6">
-            <label className="block text-sm font-medium text-text mb-1.5">
+            <label className="block text-sm font-semibold text-primary mb-1.5">
               Budget for {category?.name}
             </label>
             <div className="relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary font-medium">₱</span>
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-primary font-medium">₱</span>
               <input
                 type="number"
                 step="0.01"
@@ -82,7 +82,7 @@ export default function EditBudgetModal({
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 py-3 px-4 font-semibold text-text-secondary hover:bg-surface-raised rounded-xl transition-colors"
+              className="flex-1 py-3 px-4 font-semibold text-primary/70 hover:text-primary hover:bg-primary-light rounded-xl transition-colors"
             >
               Cancel
             </button>
