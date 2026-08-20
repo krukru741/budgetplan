@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { Wallet, Receipt, CalendarDays, Target, Plus } from 'lucide-react'
+import { Wallet, CalendarDays, Target, Plus } from 'lucide-react'
 
 export const metadata = {
   title: 'Dashboard | BudgetPlan',
@@ -13,18 +13,17 @@ export default async function DashboardPage() {
 
   if (!user) redirect('/login')
 
+  const { data, error } = await supabase.rpc('get_safe_to_spend').single()
+  
+  const safeToSpend = data?.current_safe_to_spend || 0
+  const reservedBudget = data?.reserved_budget || 0
+  const totalAvailable = data?.total_available_money || 0
+
   const { data: profile } = await supabase
     .from('users')
     .select('name')
     .eq('id', user.id)
     .single()
-
-  const { data: accounts } = await supabase
-    .from('accounts')
-    .select('balance')
-    .eq('user_id', user.id)
-
-  const totalBalance = accounts?.reduce((sum, acc) => sum + Number(acc.balance), 0) || 0
 
   return (
     <div className="page-container animate-fade-in">
@@ -38,16 +37,30 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      {/* Main Stats Card (Safe-to-Spend placeholder for now, using Total Balance) */}
-      <div className="card bg-gradient-to-br from-primary to-primary-hover p-6 text-white mb-8 border-transparent">
-        <h2 className="text-white/80 text-sm font-medium mb-1">Total Available Balance</h2>
-        <div className="text-4xl font-display font-bold tabular-nums">
-          <span className="text-white/60 text-2xl mr-1">₱</span>
-          {totalBalance.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+      {/* Safe-to-Spend Hero Card */}
+      <div className="card bg-primary text-white p-6 mb-8 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-20 -mt-20"></div>
+        
+        <div className="relative z-10">
+          <h2 className="text-white/80 font-medium mb-2 text-sm uppercase tracking-wider">Safe to Spend</h2>
+          <div className="flex items-baseline gap-2">
+            <span className="text-2xl text-white/80">₱</span>
+            <span className="text-5xl font-display font-bold tabular-nums">
+              {Number(safeToSpend).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+            </span>
+          </div>
+          
+          <div className="mt-6 flex flex-col md:flex-row gap-4 md:gap-8 pt-4 border-t border-white/20 text-sm">
+            <div>
+              <div className="text-white/70 mb-1">Total Available Cash</div>
+              <div className="font-semibold">₱{Number(totalAvailable).toLocaleString('en-US', { minimumFractionDigits: 2 })}</div>
+            </div>
+            <div>
+              <div className="text-white/70 mb-1">Reserved Budget</div>
+              <div className="font-semibold">- ₱{Number(reservedBudget).toLocaleString('en-US', { minimumFractionDigits: 2 })}</div>
+            </div>
+          </div>
         </div>
-        <p className="text-white/70 text-xs mt-4">
-          Phase 1: Safe-to-Spend calculations will replace this in the Budget module.
-        </p>
       </div>
 
       {/* Quick Links */}
