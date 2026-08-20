@@ -13,33 +13,33 @@ export default function AuthLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="min-h-screen flex flex-col justify-center items-center bg-background px-4 md:px-6 py-12 relative">
       {/* Background gradient */}
       <div
         className="fixed inset-0 pointer-events-none"
         aria-hidden="true"
         style={{
           background:
-            'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(37,99,235,0.18) 0%, transparent 70%)',
+            'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(37,99,235,0.08) 0%, transparent 70%)',
         }}
       />
 
-      {/* Header */}
-      <header className="relative z-10 flex justify-center pt-10 pb-2">
-        <Logo size="lg" />
-      </header>
+      <div className="w-full max-w-md relative z-10 flex flex-col items-center">
+        {/* Header */}
+        <header className="mb-8">
+          <Logo size="lg" />
+        </header>
 
-      {/* Card */}
-      <main className="relative z-10 flex-1 flex items-start justify-center px-4 pt-6 pb-16">
-        <div className="w-full max-w-md">
+        {/* Card */}
+        <main className="w-full">
           {children}
-        </div>
-      </main>
+        </main>
 
-      {/* Footer */}
-      <footer className="relative z-10 text-center text-xs text-text-secondary py-4 pb-safe">
-        <p>© {new Date().getFullYear()} BudgetPlan. All rights reserved.</p>
-      </footer>
+        {/* Footer */}
+        <footer className="mt-8 text-center text-xs text-text-secondary">
+          &copy; {new Date().getFullYear()} BudgetPlan. All rights reserved.
+        </footer>
+      </div>
     </div>
   )
 }
