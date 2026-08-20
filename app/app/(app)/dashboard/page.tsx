@@ -72,7 +72,7 @@ export default async function DashboardPage() {
       {/* Mobile Top Bar */}
       <div className="md:hidden flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-xl font-display font-bold text-text leading-tight">
+          <h1 className="text-xl font-display font-bold text-primary leading-tight">
             Hello, {profile?.name?.split(' ')[0] || 'there'} 👋
           </h1>
           <p className="text-xs text-text-secondary mt-0.5">{new Date().toLocaleString('default', { month: 'long', year: 'numeric' })}</p>
@@ -85,15 +85,15 @@ export default async function DashboardPage() {
       {/* Desktop Header */}
       <div className="hidden md:flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-display font-bold text-text">
+          <h1 className="text-3xl font-display font-bold text-primary">
             Hello, {profile?.name?.split(' ')[0] || 'there'} 👋
           </h1>
           <p className="text-text-secondary mt-1 text-lg">Here&apos;s your financial overview</p>
         </div>
-        <div className="flex items-center gap-4 bg-surface-raised px-4 py-2 rounded-xl shadow-sm border border-border">
-          <CalendarDays className="w-5 h-5 text-text-tertiary" />
-          <span className="font-medium text-text">{new Date().toLocaleString('default', { month: 'long', year: 'numeric' })}</span>
-        </div>
+        <button className="flex items-center gap-4 bg-surface-raised hover:bg-primary-light px-4 py-2 rounded-xl shadow-sm border border-border hover:border-primary/20 transition-colors cursor-pointer group">
+          <CalendarDays className="w-5 h-5 text-text-tertiary group-hover:text-primary transition-colors" />
+          <span className="font-medium text-text group-hover:text-primary transition-colors">{new Date().toLocaleString('default', { month: 'long', year: 'numeric' })}</span>
+        </button>
       </div>
 
       {/* Main Grid Layout */}
@@ -136,7 +136,7 @@ export default async function DashboardPage() {
               { name: 'Goals', icon: Target, href: '/goals', color: 'text-success' },
             ].map(item => (
               <Link key={item.name} href={item.href} className="card py-3 px-2 flex flex-col items-center justify-center text-center hover:bg-surface-raised transition-colors group shadow-sm">
-                <div className={`w-10 h-10 rounded-full bg-surface-raised flex items-center justify-center mb-2 group-hover:scale-110 transition-transform ${item.color}`}>
+                <div className={`w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mb-2 group-hover:scale-110 transition-transform ${item.color}`}>
                   <item.icon className="w-5 h-5" />
                 </div>
                 <span className="text-xs font-medium text-text-secondary">{item.name}</span>
@@ -224,7 +224,7 @@ export default async function DashboardPage() {
                 { name: 'Goals', icon: Target, href: '/goals', color: 'text-success' },
               ].map(item => (
                 <Link key={item.name} href={item.href} className="card p-4 aspect-square flex flex-col items-center justify-center text-center hover:border-primary/30 transition-colors group shadow-sm">
-                  <div className={`w-12 h-12 rounded-full bg-surface-raised flex items-center justify-center mb-3 group-hover:scale-110 transition-transform ${item.color}`}>
+                  <div className={`w-12 h-12 rounded-full bg-primary-light flex items-center justify-center mb-3 group-hover:scale-110 transition-transform ${item.color}`}>
                     <item.icon className="w-6 h-6" />
                   </div>
                   <span className="text-sm font-medium text-text-secondary group-hover:text-text transition-colors line-clamp-2">{item.name}</span>
