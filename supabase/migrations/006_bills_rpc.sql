@@ -6,6 +6,8 @@
 -- ------------------------------------------------------------------------------
 -- 1. Redefine get_safe_to_spend to subtract unpaid bills
 -- ------------------------------------------------------------------------------
+DROP FUNCTION IF EXISTS public.get_safe_to_spend();
+
 CREATE OR REPLACE FUNCTION public.get_safe_to_spend()
 RETURNS json
 LANGUAGE plpgsql
